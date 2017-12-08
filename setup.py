@@ -30,22 +30,21 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='eseries',
+    name='renard',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version=find_version("eseries/version.py"),
+    version=find_version("renard/version.py"),
 
-    description='Working with the E-series of preferred numbers used for electronic components, ' \
-                'such as resistors and capacitors',
+    description='Working with the Renard series of preferred numbers specified in ISO 3.',
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://github.com/rob-smallshire/eseries',
+    url='https://github.com/rob-smallshire/renard',
 
     # Author details
-    author='Sixty North AS',
+    author='Robert Smallshire',
     author_email='rob@sixty-north.com',
 
     # Choose your license
@@ -76,7 +75,7 @@ setup(
     ],
 
     # What does your project relate to?
-    keywords='electronics resistors capacitors preferred-numbers',
+    keywords='engineering preferred-numbers',
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
@@ -114,7 +113,7 @@ setup(
     # pip to create the appropriate form of executable for the target platform.
     entry_points={
         'console_scripts': [
-            'eseries = eseries.cli:main',
+            'renard = renard.cli:main',
         ],
     }
 )

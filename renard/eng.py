@@ -1,6 +1,6 @@
 from math import floor, log10
 
-from eseries.eseries import _round_sig
+from renard.renard import _round_sig
 
 PREFIXES = 'yzafpnµm kMGTPEZY'
 
@@ -29,7 +29,7 @@ def eng_string(x, sig_figs=3, prefix=True):
         exp = int(floor(log10(x)))
         exp3 = exp - (exp % 3)
         x3 = x / (10 ** exp3)
-        x3 = _round_sig(x3, 3)  # None of the E-series values have more than 3 s.f.
+        x3 = _round_sig(x3, 3)  # None of the Renard series values have more than 3 s.f.
         if x3 == int(x3):  # prevent from displaying .0
             x3 = int(x3)
 

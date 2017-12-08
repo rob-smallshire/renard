@@ -1,4 +1,4 @@
-"""The command-line for eseries"""
+"""The command-line for renard"""
 
 import os
 import sys
@@ -6,11 +6,10 @@ import sys
 import docopt
 import docopt_subcommands as dsc
 
-from eseries.eng import eng_string
-from eseries.version import __version__
-from eseries.eseries import series_key_from_name, find_nearest, find_nearest_few, find_greater_than_or_equal, \
-    find_greater_than, find_less_than, find_less_than_or_equal, tolerance, series, erange, lower_tolerance_limit, \
-    tolerance_limits, upper_tolerance_limit
+from renard.eng import eng_string
+from renard.version import __version__
+from renard.renard import (series_key_from_name, find_nearest, find_nearest_few, find_greater_than_or_equal,
+                           find_greater_than, find_less_than, find_less_than_or_equal,  series, rrange)
 
 DOC_TEMPLATE = """{program}
 
@@ -31,7 +30,7 @@ See '{program} help <command>' for help on specific commands.
 def handle_nearest(args):
     """usage: {program} nearest <e-series> <value> [--symbol]
 
-    The nearest value in an E-Series.
+    The nearest value in an Renard series.
 
     Options:
       -s --symbol  Use the SI magnitude prefix symbol.
@@ -48,7 +47,7 @@ def handle_nearest(args):
 def handle_nearby(args):
     """usage: {program} nearby <e-series> <value> [--symbol]
 
-    At least three nearby values in an E-Series, and least one of
+    At least three nearby values in an Renard series, and least one of
     which will be less-than the given value, and at least one
     greater-than the given value.
 
@@ -136,7 +135,7 @@ def handle_le(args):
 def handle_tolerance(args):
     """usage: {program} tolerance <e-series> [--symbol]
 
-    The tolerance of the given E-Series.
+    The tolerance of the given Renard series.
 
     Options:
      -s --symbol  Display as a percentage.
@@ -156,7 +155,7 @@ def handle_tolerance(args):
 def handle_series(args):
     """usage: {program} series <e-series>
 
-    The base values for the given E-Series.
+    The base values for the given Renard series.
     """
     series_key = extract_series_key(args)
     for item in series(series_key):
@@ -168,7 +167,7 @@ def handle_series(args):
 def handle_range(args):
     """usage: {program} range <e-series> <start-value> <stop-value> [--symbol]
 
-    All values in the given E-series from start-value to stop-value inclusive.
+    All values in the given Renard series from start-value to stop-value inclusive.
 
     Options:
       -s --symbol  Use the SI magnitude prefix symbol.
@@ -176,66 +175,10 @@ def handle_range(args):
     series_key = extract_series_key(args)
     start_value = extract_value(args, '<start-value>')
     stop_value = extract_value(args, '<stop-value>')
-    items = erange(series_key, start_value, stop_value)
+    items = rrange(series_key, start_value, stop_value)
     for item in items:
         item_text = present_value(args, item)
         print(item_text)
-    return os.EX_OK
-
-
-@dsc.command()
-def handle_lower_tolerance_limit(args):
-    """usage: {program} lower-tolerance-limit <e-series> <value> [--symbol]
-
-    The lower tolerance limit of a nominal value given the tolerance
-    of the specified E-Series.
-
-    Options:
-      -s --symbol  Use the SI magnitude prefix symbol.
-    """
-    series_key = extract_series_key(args)
-    value = extract_value(args)
-    lower = lower_tolerance_limit(series_key, value)
-    lower_text = present_value(args, lower)
-    print(lower_text)
-    return os.EX_OK
-
-
-@dsc.command()
-def handle_upper_tolerance_limit(args):
-    """usage: {program} upper-tolerance-limit <e-series> <value> [--symbol]
-
-    The upper tolerance limit of a nominal value given the tolerance
-    of the specified E-Series.
-
-    Options:
-      -s --symbol  Use the SI magnitude prefix symbol.
-    """
-    series_key = extract_series_key(args)
-    value = extract_value(args)
-    upper = upper_tolerance_limit(series_key, value)
-    upper_text = present_value(args, upper)
-    print(upper_text)
-    return os.EX_OK
-
-
-@dsc.command()
-def handle_tolerance_limits(args):
-    """usage: {program} tolerance-limits <e-series> <value> [--symbol]
-
-    The upper and lower tolerance limits of a nominal value given the
-    tolerance of the specified E-Series.
-
-    Options:
-      -s --symbol  Use the SI magnitude prefix symbol.
-    """
-    series_key = extract_series_key(args)
-    value = extract_value(args)
-    lower, upper = tolerance_limits(series_key, value)
-    lower_text = present_value(args, lower)
-    upper_text = present_value(args, upper)
-    print(lower_text)
-    print(upper_text)
     return os.EX_OK
 
 
@@ -254,7 +197,7 @@ def extract_value(args, name='<value>'):
     try:
         value = float(text_value)
     except ValueError:
-        raise ValueError("{!r} could not be interpreted as an E-Series {}".format(
+        raise ValueError("{!r} could not be interpreted as an Renard series {}".format(
             text_value, name[1:-1]))
     return value
 
@@ -262,8 +205,8 @@ def extract_value(args, name='<value>'):
 def main(argv=None):
     try:
         return dsc.main(
-            program='eseries',
-            version='E-Series {}'.format(__version__),
+            program='renard',
+            version='Renard series {}'.format(__version__),
             argv=argv,
             doc_template=DOC_TEMPLATE,
             exit_at_end=False)

@@ -1,7 +1,7 @@
 from hypothesis import given
 from hypothesis.strategies import integers, floats
 
-from eseries.eng import eng_string
+from renard.eng import eng_string
 
 
 def test_eng_string_zero():

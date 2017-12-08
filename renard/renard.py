@@ -5,73 +5,70 @@ from enum import IntEnum
 import math
 from math import log10, floor
 
+_BASE_SIGNIFICANT_FIGURES = 3
 
-_MINIMUM_E_VALUE = 1e-200
+_MINIMUM_R_VALUE = 1e-200
 
 
-class ESeries(IntEnum):
-    """An enumeration of possible E-Series identifiers.
+class RenardSeriesKey(IntEnum):
+    """An enumeration of possible Renard series identifiers.
     """
-    E3 = 3
-    E6 = 6
-    E12 = 12
-    E24 = 24
-    E48 = 48
-    E96 = 96
-    E192 = 192
+    R5 = 5
+    R10 = 10
+    R20 = 20
+    R40 = 40
+    R80 = 80
 
 
-E3 = ESeries.E3
-E6 = ESeries.E6
-E12 = ESeries.E12
-E24 = ESeries.E24
-E48 = ESeries.E48
-E96 = ESeries.E96
-E192 = ESeries.E192
+
+R5 = RenardSeriesKey.R5
+R10 = RenardSeriesKey.R10
+R20 = RenardSeriesKey.R20
+R40 = RenardSeriesKey.R40
+R80 = RenardSeriesKey.R80
 
 
-_E = OrderedDict((
-    (E3, (10, 22, 47)),
-    (E6, (10, 15, 22, 33, 47, 68)),
-    (E12, (10, 12, 15, 18, 22, 27, 33, 39, 47, 56, 68, 82)),
-    (E24, (10, 11, 12, 13, 15, 16, 18, 20, 22, 24, 27, 30, 33, 36, 39, 43, 47, 51, 56, 62, 68, 75, 82, 91)),
-    (E48, (100, 105, 110, 115, 121, 127, 133, 140, 147, 154, 162, 169, 178, 187, 196, 205, 215, 226, 237, 249, 261, 274,
-        287, 301, 316, 332, 348, 365, 383, 402, 422, 442, 464, 487, 511, 536, 562, 590, 619, 649, 681, 715, 750, 787,
-        825, 866, 909, 953)),
-    (E96, (100, 102, 105, 107, 110, 113, 115, 118, 121, 124, 127, 130, 133, 137, 140, 143, 147, 150, 154, 158, 162, 165,
-        169, 174, 178, 182, 187, 191, 196, 200, 205, 210, 215, 221, 226, 232, 237, 243, 249, 255, 261, 267, 274, 280,
-        287, 294, 301, 309, 316, 324, 332, 340, 348, 357, 365, 374, 383, 392, 402, 412, 422, 432, 442, 453, 464, 475,
-        487, 499, 511, 523, 536, 549, 562, 576, 590, 604, 619, 634, 649, 665, 681, 698, 715, 732, 750, 768, 787, 806,
-        825, 845, 866, 887, 909, 931, 953, 976)),
-    (E192, (100, 101, 102, 104, 105, 106, 107, 109, 110, 111, 113, 114, 115, 117, 118, 120, 121, 123, 124, 126, 127, 129,
-          130, 132, 133, 135, 137, 138, 140, 142, 143, 145, 147, 149, 150, 152, 154, 156, 158, 160, 162, 164, 165, 167,
-          169, 172, 174, 176, 178, 180, 182, 184, 187, 189, 191, 193, 196, 198, 200, 203, 205, 208, 210, 213, 215, 218,
-          221, 223, 226, 229, 232, 234, 237, 240, 243, 246, 249, 252, 255, 258, 261, 264, 267, 271, 274, 277, 280, 284,
-          287, 291, 294, 298, 301, 305, 309, 312, 316, 320, 324, 328, 332, 336, 340, 344, 348, 352, 357, 361, 365, 370,
-          374, 379, 383, 388, 392, 397, 402, 407, 412, 417, 422, 427, 432, 437, 442, 448, 453, 459, 464, 470, 475, 481,
-          487, 493, 499, 505, 511, 517, 523, 530, 536, 542, 549, 556, 562, 569, 576, 583, 590, 597, 604, 612, 619, 626,
-          634, 642, 649, 657, 665, 673, 681, 690, 698, 706, 715, 723, 732, 741, 750, 759, 768, 777, 787, 796, 806, 816,
-          825, 835, 845, 856, 866, 876, 887, 898, 909, 920, 931, 942, 953, 965, 976, 988))
+_R = OrderedDict((
+    (R5,  (1.00, 1.60, 2.50, 4.00, 6.30)),
+
+    (R10, (1.00, 1.25, 1.60, 2.00, 2.50, 3.15, 4.00, 5.00, 6.30, 8.00)),
+
+    (R20, (1.00, 1.12, 1.25, 1.40, 1.60, 1.80, 2.00, 2.24, 2.50, 2.80,
+           3.15, 3.55, 4.00, 4.50, 5.00, 5.60, 6.30, 7.10, 8.00, 9.00)),
+
+    (R40, (1.00, 1.06, 1.12, 1.18, 1.25, 1.32, 1.40, 1.50, 1.60, 1.70,
+           1.80, 1.90, 2.00, 2.12, 2.24, 2.36, 2.50, 2.65, 2.80, 3.00,
+           3.15, 3.35, 3.55, 3.75, 4.00, 4.25, 4.50, 4.75, 5.00, 5.30,
+           5.60, 6.00, 6.30, 6.70, 7.10, 7.50, 8.00, 8.50, 9.00, 9.50)),
+
+    (R80, (1.00, 1.03, 1.06, 1.09, 1.12, 1.15, 1.18, 1.22, 1.25, 1.28,
+           1.32, 1.36, 1.40, 1.45, 1.50, 1.55, 1.60, 1.65, 1.70, 1.75,
+           1.80, 1.85, 1.90, 1.95, 2.00, 2.06, 2.12, 2.18, 2.24, 2.30,
+           2.36, 2.43, 2.50, 2.58, 2.65, 2.72, 2.80, 2.90, 3.00, 3.07,
+           3.15, 3.25, 3.35, 3.45, 3.55, 3.65, 3.75, 3.87, 4.00, 4.12,
+           4.25, 4.37, 4.50, 4.62, 4.75, 4.87, 5.00, 5.15, 5.30, 5.45,
+           5.60, 5.80, 6.00, 6.15, 6.30, 6.50, 6.70, 6.90, 7.10, 7.30,
+           7.50, 7.75, 8.00, 8.25, 8.50, 8.75, 9.00, 9.25, 9.50, 9.75)),
 ))
 
 
 def series(series_key):
-    """The base values for the given E-series.
+    """The base values for the given Renard series.
 
     Args:
-        series_key: An E-Series key such as E24.
+        series_key: An Renard series key such as R20.
 
     Returns:
         A tuple of base value for the series. For example, for
-        E3 the tuple (10, 22, 47) will be returned.
+        R5 the tuple (1.00, 1.60, 2.50, 4.00, 6.30) will be returned.
 
     Raises:
         ValueError: If not such series exists.
     """
     try:
-        return _E[series_key]
+        return _R[series_key]
     except KeyError:
-        raise ValueError("E-series {} not found. Available E-series keys are {}"
+        raise ValueError("Renard series {} not found. Available Renard series keys are {}"
                          .format(series_key,
                                  ', '.join(str(key.name) for key in series_keys())))
 
@@ -80,77 +77,46 @@ def series_keys():
     """The available series keys.
 
     Note:
-        The series keys returned will be members of the ESeries enumeration.
+        The series keys returned will be members of the RenardSeriesKey enumeration.
         These are useful for programmatic use. For constant values consider
-        using the module aliases E3, E6, E12, etc.
+        using the module aliases R5, R10, R20, etc.
 
     Returns:
         A set-like object containing the series-keys.
     """
-    return _E.keys()
+    return _R.keys()
 
 
 def series_key_from_name(name):
-    """Get an ESeries from its name.
+    """Get an RenardSeriesKey from its name.
 
     Args:
-        name: The series name as a string, for example 'E24'
+        name: The series name as a string, for example 'R20'
 
     Returns:
-        An ESeries object which can be uses as a series_key.
+        An RenardSeriesKey object which can be uses as a series_key.
 
     Raises:
         ValueError: If not such series exists.
     """
     try:
-        return ESeries[name]
+        return RenardSeriesKey[name]
     except KeyError:
-        raise ValueError("E-series with name {!r} not found. Available E-series keys are {}"
+        raise ValueError("Renard series with name {!r} not found. Available Renard series keys are {}"
                          .format(name,
                                  ', '.join(str(key.name) for key in series_keys())))
 
-_TOLERANCE = {
-    E3: 0.4,
-    E6: 0.2,
-    E12: 0.1,
-    E24: 0.05,
-    E48: 0.02,
-    E96: 0.01,
-    E192: 0.005
-}
 
+LOG10_MANTISSA_E = {num: list(map(lambda x: log10(x) % 1, series)) for num, series in _R.items()}
 
-def tolerance(series_key):
-    """The nominal tolerance of an E Series.
-
-    Args:
-        series_key: An E-Series key such as E24.
-
-    Returns:
-        A float between zero and one. For example 0.1 indicates a 10% tolerance.
-
-    Raises:
-        ValueError: For an unknown E-Series.
-    """
-    try:
-        return _TOLERANCE[series_key]
-    except KeyError:
-        raise ValueError("E-series {} not found. Available E-series keys are {}"
-                         .format(series_key,
-                                 ', '.join(str(key.name) for key in series_keys())))
-
-
-
-LOG10_MANTISSA_E = {num: list(map(lambda x: log10(x) % 1, series)) for num, series in _E.items()}
-
-GEOMETRIC_SCALE_E = {num: max(b/a for a, b in zip(series, series[1:])) for num, series in _E.items()}
+GEOMETRIC_SCALE_E = {num: max(b/a for a, b in zip(series, series[1:])) for num, series in _R.items()}
 
 
 def find_greater_than_or_equal(series_key, value):
     """Find the smallest value greater-than or equal-to the given value.
 
     Args:
-        series_key: An E-Series key such as E24.
+        series_key: An Renard series key such as R20.
         value: The query value.
 
     Returns:
@@ -172,7 +138,7 @@ def find_greater_than(series_key, value):
     """Find the smallest value greater-than or equal-to the given value.
 
     Args:
-        series_key: An E-Series key such as E24.
+        series_key: An Renard series key such as R20.
         value: The query value.
 
     Returns:
@@ -194,7 +160,7 @@ def find_less_than_or_equal(series_key, value):
     """Find the largest value less-than or equal-to the given value.
 
     Args:
-        series_key: An E-Series key such as E24.
+        series_key: An Renard series key such as R20.
         value: The query value.
 
     Returns:
@@ -216,7 +182,7 @@ def find_less_than(series_key, value):
     """Find the largest value less-than or equal-to the given value.
 
     Args:
-        series_key: An E-Series key such as E24.
+        series_key: An Renard series key such as R20.
         value: The query value.
 
     Returns:
@@ -238,11 +204,11 @@ def find_nearest(series_key, value):
     """Find the nearest value.
 
     Args:
-        series_key: The ESeries to use.
+        series_key: The RenardSeriesKey to use.
         value: The value for which the nearest value is to be found.
 
     Returns:
-        The value in the specified E-series closest to value.
+        The value in the specified Renard series closest to value.
 
     Raises:
         ValueError: If series_key is not known.
@@ -256,7 +222,7 @@ def find_nearest_few(series_key, value, num=3):
     """Find the nearest values.
 
     Args:
-        series_key: The ESeries to use.
+        series_key: The RenardSeriesKey to use.
         value: The value for which the nearest values are to be found.
         num: The number of nearby values to find: 1, 2 or 3.
 
@@ -275,16 +241,16 @@ def find_nearest_few(series_key, value, num=3):
         raise ValueError("num {} is not 1, 2 or 3".format(num))
     start = value / pow(GEOMETRIC_SCALE_E[series_key], 1.5)
     stop = value * pow(GEOMETRIC_SCALE_E[series_key], 1.5)
-    candidates = tuple(erange(series_key, start, stop))
+    candidates = tuple(rrange(series_key, start, stop))
     nearest = _nearest_n(candidates, value, num)
     return nearest
 
 
-def erange(series_key, start, stop):
-    """Generate  E values in a range inclusive of the start and stop values.
+def rrange(series_key, start, stop):
+    """Generate Renard values in a range inclusive of the start and stop values.
 
     Args:
-        series_key: The ESeries to use.
+        series_key: The RenardSeriesKey to use.
         start: The beginning of the range. The yielded values may include this value.
         stop: The end of the range. The yielded values may include this value.
 
@@ -302,17 +268,17 @@ def erange(series_key, start, stop):
         raise ValueError("Start value {} is not finite".format(start))
     if not math.isfinite(stop):
         raise ValueError("Stop value {} is not finite".format(stop))
-    if start < _MINIMUM_E_VALUE:
-        raise ValueError("{} is too small. The start value must greater than or equal to {}".format(stop, _MINIMUM_E_VALUE))
-    if stop < _MINIMUM_E_VALUE:
-        raise ValueError("{} is too small. The stop value must greater than or equal to {}".format(stop, _MINIMUM_E_VALUE))
+    if start < _MINIMUM_R_VALUE:
+        raise ValueError("{} is too small. The start value must greater than or equal to {}".format(stop, _MINIMUM_R_VALUE))
+    if stop < _MINIMUM_R_VALUE:
+        raise ValueError("{} is too small. The stop value must greater than or equal to {}".format(stop, _MINIMUM_R_VALUE))
     if not start <= stop:
         raise ValueError("Start value {} must be less than stop value {}".format(start, stop))
 
-    return _erange(series_key, start, stop)
+    return _rrange(series_key, start, stop)
 
 
-def _erange(series_key, start, stop):
+def _rrange(series_key, start, stop):
     series_values = series(series_key)
     series_log = LOG10_MANTISSA_E[series_key]
     epsilon = (series_log[-1] - series_log[-2]) / 2
@@ -335,16 +301,16 @@ def _erange(series_key, start, stop):
             found = series_values[index]
             scale_exponent = decade - series_decade
             result = found * math.pow(10, scale_exponent)
-            rounded_result = _round_sig(result, figures=series_decade + 1)
+            rounded_result = _round_sig(result, figures=series_decade + _BASE_SIGNIFICANT_FIGURES)
             if start <= rounded_result <= stop:
                 yield rounded_result
 
 
-def open_erange(series_key, start, stop):
-    """Generate E values in a half-open range inclusive of start, but exclusive of stop.
+def open_rrange(series_key, start, stop):
+    """Generate Renard values in a half-open range inclusive of start, but exclusive of stop.
 
     Args:
-        series_key: The ESeries to use.
+        series_key: The RenardSeriesKey to use.
         start: The beginning of the range. The yielded values may include this value.
         stop: The end of the range. The yielded values will not include this value.
 
@@ -362,68 +328,13 @@ def open_erange(series_key, start, stop):
         raise ValueError("Start value {} is not finite".format(start))
     if not math.isfinite(stop):
         raise ValueError("Stop value {} is not finite".format(stop))
-    if start < _MINIMUM_E_VALUE:
-        raise ValueError("{} is too small. The start value must greater than or equal to {}".format(stop, _MINIMUM_E_VALUE))
-    if stop < _MINIMUM_E_VALUE:
-        raise ValueError("{} is too small. The stop value must greater than or equal to {}".format(stop, _MINIMUM_E_VALUE))
+    if start < _MINIMUM_R_VALUE:
+        raise ValueError("{} is too small. The start value must greater than or equal to {}".format(stop, _MINIMUM_R_VALUE))
+    if stop < _MINIMUM_R_VALUE:
+        raise ValueError("{} is too small. The stop value must greater than or equal to {}".format(stop, _MINIMUM_R_VALUE))
     if not start <= stop:
         raise ValueError("Start value {} must be less than stop value {}".format(start, stop))
-    return (item for item in erange(series_key, start, stop) if item != stop)
-
-
-def lower_tolerance_limit(series_key, value):
-    """The lower limit for a nominal value of a series.
-
-    Args:
-        series_key: The ESeries to use.
-        value: A nominal value. This value need not be an member of
-            the specified E-series.
-
-    Returns:
-        The lower tolerance limit for the nominal value based on the
-        E-series tolerance.
-
-    Raises:
-        ValueError: If series_key is not known.
-    """
-    return value - value * tolerance(series_key)
-
-
-def upper_tolerance_limit(series_key, value):
-    """The upper limit for a nominal value of a series.
-
-    Args:
-        series_key: The ESeries to use.
-        value: A nominal value. This value need not be an member of
-            the specified E-series.
-
-    Returns:
-        The upper tolerance limit for the nominal value based on the
-        E-series tolerance.
-
-    Raises:
-        ValueError: If series_key is not known.
-    """
-    return value + value * tolerance(series_key)
-
-
-def tolerance_limits(series_key, value):
-    """The lower and upper tolerance limits for a nominal value of a series.
-
-    Args:
-        series_key: The ESeries to use.
-        value: A nominal value. This value need not be an member of
-            the specified E-series.
-
-    Returns:
-        A 2-tuple containing the lower and upper tolerance limits for the
-        nominal value based on the E-series tolerance.
-
-    Raises:
-        ValueError: If series_key is not known.
-    """
-    return (lower_tolerance_limit(series_key, value),
-            upper_tolerance_limit(series_key, value))
+    return (item for item in rrange(series_key, start, stop) if item != stop)
 
 
 def _nearest_n(candidates, value, n):

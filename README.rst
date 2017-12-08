@@ -1,67 +1,80 @@
 eseries
 =======
 
-The E-series is a system of preferred numbers used with electronic
-components such as resistors and capacitors. For example, the E6
-series contains six values (10, 15, 22, 33, 47, 68) which cover a
-one-order of magnitude range of values (one decade) from 10 to 99.
-These base values repeat again to cover the next decade from 100
-to 999, as 100, 220, 330, 470, and 680.
+The Renard series are a system of preferred numbers used in
+engineering applications which specifies a geometric sequence
+of numbers over the range one to ten. The numbers
+are selected to be convenient to use an to minimise the
+maximum relative error when an arbitrary number is replaced
+by the nearest Renard number. The series were proposed by the
+French army engineer Colonel Charles Renard and subsequently
+standardised in ISO 3-1973.
 
-This ``eseries`` library is useful for selecting values from the
-standard E3, E6, E12, E24, E48, E96 and E192 decades.
+For example, the R5 series contains six values
+(1.00, 1.60, 2.50, 4.00, 6.00) which cover a one-order of magnitude
+range of values (one decade) from one to ten.
+These base values repeat again to cover the next decade from 10
+to 100, as 10, 16, 25, 40, and 60.
+
+This ``renard`` library is useful for selecting values from the
+least rounded R5, R10, R20, R40 and R80 decades, the medium
+rounded R'10, R'20 and R'40 decades, and the most rounded R"5,
+R"10 and R"20 decades.
+
+
 
 Status
 ------
 
-.. image:: https://travis-ci.org/rob-smallshire/eseries.svg?branch=master
-    :target: https://travis-ci.org/rob-smallshire/eseries
+.. image:: https://travis-ci.org/rob-smallshire/renard.svg?branch=master
+    :target: https://travis-ci.org/rob-smallshire/renard
     
-.. image:: https://coveralls.io/repos/github/rob-smallshire/eseries/badge.svg?branch=master
-    :target: https://coveralls.io/github/rob-smallshire/eseries?branch=master
+.. image:: https://coveralls.io/repos/github/rob-smallshire/renard/badge.svg?branch=master
+    :target: https://coveralls.io/github/rob-smallshire/renard?branch=master
 
 
 
 Installation
 ------------
 
-The ``eseries`` package is available on the Python Package Index (PyPI):
+The ``renard`` package is available on the Python Package Index (PyPI):
 
-.. image:: https://badge.fury.io/py/eseries.svg
-    :target: https://badge.fury.io/py/eseries
+.. image:: https://badge.fury.io/py/renard.svg
+    :target: https://badge.fury.io/py/renard
 
 The package support Python 3 only. To install::
 
-  $ pip install eseries
+  $ pip install renard
 
 Python Interface
 ----------------
 
 For full help::
 
-  >>> import eseries
-  >>> help(eseries)
+  >>> import renard
+  >>> help(renard)
 
 In the meantime, here are some highlights.
 
 To find the nearest E24 value to 319 use::
 
-  >>> from eseries import find_nearest, E24
-  >>> find_nearest(E24, 319)
-  330
+  >>> from renard import find_nearest, R20
+  >>> find_nearest(R20, 319)
+  >>> 315.0
+
 
 To find the next value greater-than or equal-to 184 in the E96 series
 use::
 
-  >>> from eseries import find_greater_than_or_equal, E96
-  >>> find_greater_than_or_equal(E96, 184)
-  187
+  >>> from renard import find_greater_than_or_equal, R80
+  >>> find_greater_than_or_equal(R80, 182)
+  >>> 185.0
 
 To find a few values around the specified value, use::
 
-  >>> from eseries import find_nearest_few, E24
-  >>> find_nearest_few(E24, 5000)
-  (4700, 5100, 5600)
+  >>> from renard import find_nearest_few, R20
+  >>> find_nearest_few(R20, 5000)
+  >>> (4500.0, 5000.0, 5600.0)
 
 
 Command-Line Interface
@@ -70,76 +83,65 @@ Command-Line Interface
 There's also a handy command-line interface. Run ``eseries --help``
 to see a list of commands::
 
-  $ eseries --help
-  eseries
+  $ renard --help
+  renard
 
-  Usage: eseries [options] <command> [<args> ...]
+  Usage: renard [options] <command> [<args> ...]
 
   Options:
     -h --help     Show this screen.
     -v --verbose  Use verbose logging
 
- Available commands:
+  Available commands:
     ge
     gt
     help
     le
-    lower-tolerance-limit
     lt
     nearby
     nearest
     range
     series
     tolerance
-    tolerance-limits
-    upper-tolerance-limit
 
-  See 'eseries help <command>' for help on specific commands.
+  See 'renard help <command>' for help on specific commands.
+
 
 To find a nearby value, use::
 
-  $ eseries nearest E24 37726
-  39e3
+  $ renard nearest R20 37726
+  35.5e3
 
 If you prefer an SI exponent symbol, supply ``--symbol`` or ``-s``::
 
-  $ eseries nearest E24 37726 -s
-  39 k
+  $ renard nearest R20 37726 -s
+  35.5 k
 
 To show values around the given value, use the ``nearby`` command::
 
-  $ eseries nearby E48 52e6 -s
-  48.7 M
-  51.1 M
-  53.6 M
+  $ renard nearby R40 52e6 -s
+  50 M
+  53 M
+  56 M
 
 To show the smallest value greater than or equal to the given value, use the ``ge`` command::
 
-  $ eseries ge E48 52e3 -s
-  53.6 k
-
-To show the upper and lower tolerance limits of a nominal value, use the ``tolerance-limits`` command::
-
-  $ eseries tolerance-limits E48 35
-  34.3
-  35.7
+  $ renard ge R40 52e3 -s
+  53 k
 
 To show all values in an inclusive range, use the ``range`` command::
 
-  $ eseries range E6 74e-9 34e-6 --symbol
+  $ renard range R5 74e-9 34e-6 -s
   100 n
-  150 n
-  220 n
-  330 n
-  470 n
-  680 n
+  160 n
+  250 n
+  400 n
+  630 n
   1 µ
-  1.5 µ
-  2.2 µ
-  3.3 µ
-  4.7 µ
-  6.8 µ
+  1.6 µ
+  2.5 µ
+  4 µ
+  6.3 µ
   10 µ
-  15 µ
-  22 µ
-  33 µ
+  16 µ
+  25 µ

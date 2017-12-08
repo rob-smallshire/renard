@@ -1,5 +1,5 @@
 import sys
 
-from eseries.cli import main
+from renard.cli import main
 
 sys.exit(main())
