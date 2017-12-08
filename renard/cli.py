@@ -132,26 +132,6 @@ def handle_le(args):
 
 
 @dsc.command()
-def handle_tolerance(args):
-    """usage: {program} tolerance <e-series> [--symbol]
-
-    The tolerance of the given Renard series.
-
-    Options:
-     -s --symbol  Display as a percentage.
-    """
-    series_key = extract_series_key(args)
-    tol = tolerance(series_key)
-    if args['--symbol']:
-        percent = float(tol * 100)
-        if percent.is_integer():
-            percent = int(percent)
-        print("{}%".format(percent))
-    else:
-        print(tol)
-    return os.EX_OK
-
-@dsc.command()
 def handle_series(args):
     """usage: {program} series <e-series>
 
