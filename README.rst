@@ -42,7 +42,7 @@ The ``renard`` package is available on the Python Package Index (PyPI):
 .. image:: https://badge.fury.io/py/renard.svg
     :target: https://badge.fury.io/py/renard
 
-The package support Python 3 only. To install::
+The package supports Python 3 only. To install::
 
   $ pip install renard
 
