@@ -18,8 +18,8 @@ to 100, as 10, 16, 25, 40, and 63.
 
 This ``renard`` library is useful for selecting values from the
 least rounded R5, R10, R20, R40 and R80 decades, the medium
-rounded R'10, R'20 and R'40 decades, and the most rounded R"5,
-R"10 and R"20 decades.
+rounded RR10, RR20 and RR40 decades, and the most rounded RRR5,
+RRR10 and RRR20 decades.
 
 
 
@@ -145,3 +145,14 @@ To show all values in an inclusive range, use the ``range`` command::
   10 µ
   16 µ
   25 µ
+
+To use the most-rounded Renard RRR20 (officially R"20) series.
+
+  $ renard range RRR20 10000 20000
+  10e3
+  11e3
+  12e3
+  14e3
+  16e3
+  18e3
+  20e3

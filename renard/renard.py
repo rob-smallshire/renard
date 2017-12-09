@@ -1,23 +1,42 @@
 from bisect import bisect_right, bisect_left
 from collections import OrderedDict
-from enum import IntEnum
+from enum import IntEnum, Enum
 
 import math
 from math import log10, floor
 
-_BASE_SIGNIFICANT_FIGURES = 3
-
 _MINIMUM_R_VALUE = 1e-200
 
 
-class RenardSeriesKey(IntEnum):
+class RenardSeriesKey(Enum):
     """An enumeration of possible Renard series identifiers.
     """
-    R5 = 5
-    R10 = 10
-    R20 = 20
-    R40 = 40
-    R80 = 80
+    R5 = (5, 0.01)
+    R10 = (10, 0.01)
+    R20 = (20, 0.01)
+    R40 = (40, 0.01)
+    R80 = (80, 0.01)
+
+    RR10 = (10, 0.05)
+    RR20 = (20, 0.05)
+    RR40 = (40, 0.05)
+
+    RRR5 = (5, 0.5)
+    RRR10 = (10, 0.1)
+    RRR20 = (20, 0.1)
+
+    def __init__(self, cardinality, precision):
+        self._cardinality = cardinality
+        self._precision = precision
+
+    @property
+    def cardinality(self):
+        return self._cardinality
+
+    @property
+    def precision(self):
+        return self._precision
+
 
 
 
@@ -26,6 +45,15 @@ R10 = RenardSeriesKey.R10
 R20 = RenardSeriesKey.R20
 R40 = RenardSeriesKey.R40
 R80 = RenardSeriesKey.R80
+
+RR10 = RenardSeriesKey.RR10
+RR20 = RenardSeriesKey.RR20
+RR40 = RenardSeriesKey.RR40
+
+
+RRR5 = RenardSeriesKey.RRR5
+RRR10 = RenardSeriesKey.RRR10
+RRR20 = RenardSeriesKey.RRR20
 
 
 _R = OrderedDict((
@@ -49,6 +77,23 @@ _R = OrderedDict((
            4.25, 4.37, 4.50, 4.62, 4.75, 4.87, 5.00, 5.15, 5.30, 5.45,
            5.60, 5.80, 6.00, 6.15, 6.30, 6.50, 6.70, 6.90, 7.10, 7.30,
            7.50, 7.75, 8.00, 8.25, 8.50, 8.75, 9.00, 9.25, 9.50, 9.75)),
+
+    (RR10, (1.00, 1.25, 1.60, 2.00, 2.50, 3.20, 4.00, 5.00, 6.30, 8.00)),
+
+    (RR20, (1.00, 1.10, 1.25, 1.40, 1.60, 1.80, 2.00, 2.20, 2.50, 2.80,
+            3.20, 3.60, 4.00, 4.50, 5.00, 5.60, 6.30, 7.10, 8.00, 9.00)),
+
+    (RR40, (1.00, 1.05, 1.10, 1.20, 1.25, 1.30, 1.40, 1.50, 1.60, 1.70,
+            1.80, 1.90, 2.00, 2.10, 2.20, 2.40, 2.50, 2.60, 2.80, 3.00,
+            3.20, 3.40, 3.60, 3.80, 4.00, 4.20, 4.50, 4.80, 5.00, 5.30,
+            5.60, 6.00, 6.30, 6.70, 7.10, 7.50, 8.00, 8.50, 9.00, 9.50)),
+
+    (RRR5,  (1.0, 1.5, 2.5, 4.0, 6.0)),
+
+    (RRR10, (1.0, 1.2, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0, 8.0)),
+
+    (RRR20, (1.0, 1.1, 1.2, 1.4, 1.6, 1.8, 2.0, 2.2, 2.5, 2.8,
+             3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 7.0, 8.0, 9.0)),
 ))
 
 
@@ -301,7 +346,7 @@ def _rrange(series_key, start, stop):
             found = series_values[index]
             scale_exponent = decade - series_decade
             result = found * math.pow(10, scale_exponent)
-            rounded_result = _round_sig(result, figures=series_decade + _BASE_SIGNIFICANT_FIGURES)
+            rounded_result = _round_sig(result, figures=series_decade + abs(floor(log10(series_key.precision))) + 1)
             if start <= rounded_result <= stop:
                 yield rounded_result
 

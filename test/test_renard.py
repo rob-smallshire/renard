@@ -9,28 +9,46 @@ from renard.renard import (RenardSeriesKey, series, rrange, find_less_than_or_eq
 
 @given(series_key=sampled_from(RenardSeriesKey))
 def test_series_cardinality(series_key):
-    assert len(series(series_key)) == series_key
+    assert len(series(series_key)) == series_key.cardinality
 
 
 @given(series_key=sampled_from(RenardSeriesKey),
        low=floats(min_value=1e-35, max_value=1e35, allow_nan=False, allow_infinity=False))
-def test_erange_cardinality_over_one_order_of_magnitude(series_key, low):
+def test_rrange_cardinality_over_one_order_of_magnitude(series_key, low):
     high = low * 10.0
     assume(math.isfinite(high))
     values = list(rrange(series_key, low, high))
     include_end = bool(high in values)
-    cardinality = series_key + include_end
+    cardinality = series_key.cardinality + include_end
     assert len(values) == cardinality
 
 
 @given(series_key=sampled_from(RenardSeriesKey),
+       low=floats(min_value=1e-35, max_value=1e35, allow_nan=False, allow_infinity=False),
+       high=floats(min_value=1e-35, max_value=1e35, allow_nan=False, allow_infinity=False))
+def test_rrange_strictly_ordered(series_key, low, high):
+    assume(low < high)
+    values = list(rrange(series_key, low, high))
+    assert all(values[i] < values[i+1] for i in range(len(values)-1))
+
+
+@given(series_key=sampled_from(RenardSeriesKey),
        low=floats(min_value=1e-35, max_value=1e35, allow_nan=False, allow_infinity=False))
-def test_open_erange_cardinality_over_one_order_of_magnitude(series_key, low):
+def test_open_rrange_cardinality_over_one_order_of_magnitude(series_key, low):
     high = low * 10.0
     assume(math.isfinite(high))
     values = list(open_rrange(series_key, low, high))
-    cardinality = series_key
+    cardinality = series_key.cardinality
     assert len(values) == cardinality
+
+
+@given(series_key=sampled_from(RenardSeriesKey),
+       low=floats(min_value=1e-35, max_value=1e35, allow_nan=False, allow_infinity=False),
+       high=floats(min_value=1e-35, max_value=1e35, allow_nan=False, allow_infinity=False))
+def test_open_rrange_strictly_ordered(series_key, low, high):
+    assume(low < high)
+    values = list(open_rrange(series_key, low, high))
+    assert all(values[i] < values[i+1] for i in range(len(values)-1))
 
 
 @given(series_key=sampled_from(RenardSeriesKey),
