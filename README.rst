@@ -4,7 +4,7 @@ renard
 The Renard series are a system of preferred numbers used in
 engineering applications which specifies a geometric sequence
 of numbers over the range one to ten. The numbers
-are selected to be convenient to use an to minimise the
+are selected to be convenient to use and to minimise the
 maximum relative error when an arbitrary number is replaced
 by the nearest Renard number. The series were proposed by the
 French army engineer Colonel Charles Renard and subsequently
