@@ -102,6 +102,7 @@ to see a list of commands::
     nearest
     range
     series
+    precision
 
 
   See 'renard help <command>' for help on specific commands.
@@ -146,7 +147,8 @@ To show all values in an inclusive range, use the ``range`` command::
   16 µ
   25 µ
 
-To use the most-rounded Renard RRR20 (officially R"20) series.
+To use the most-rounded Renard R"20 series (for syntactic reasons, R'20 is called
+RR20 and R" is called RRR20 on the command line)::
 
   $ renard range RRR20 10000 20000
   10e3
@@ -156,3 +158,12 @@ To use the most-rounded Renard RRR20 (officially R"20) series.
   16e3
   18e3
   20e3
+
+
+To determine the multiple to which the base values of a series have
+been rounded, use the ``precision`` command::
+
+  $ renard precision R5
+  0.01
+
+
