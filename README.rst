@@ -102,7 +102,7 @@ to see a list of commands::
     nearest
     range
     series
-    tolerance
+
 
   See 'renard help <command>' for help on specific commands.
 
