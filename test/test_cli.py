@@ -73,7 +73,7 @@ def test_range_R10_symbol(capfd):
     assert out == "2 k\n2.5 k\n3.15 k\n"
 
 
-def test_bogus_e_series_gives_exit_code_ex_dataerr():
+def test_bogus_r_series_gives_exit_code_ex_dataerr():
     code = main("series R13".split())
     assert code == os.EX_DATAERR
 
@@ -93,3 +93,7 @@ def test_precision(capfd):
     out, err = capfd.readouterr()
     assert code == os.EX_OK
     assert out == '0.01\n'
+
+def test_bogus_r_series_precision_gives_exit_code_ex_dataerr():
+    code = main("series R13".split())
+    assert code == os.EX_DATAERR

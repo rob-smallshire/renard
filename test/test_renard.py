@@ -197,8 +197,14 @@ def test_illegal_series_key_raises_value_error():
     with raises(ValueError):
         series(13)
 
+
 @given(series_key=sampled_from(RenardSeriesKey))
 def test_series_precision_is_positive(series_key):
     assert precision(series_key) > 0
+
+
+def test_illegal_precision_series_key_raises_value_error():
+    with raises(ValueError):
+        precision(object())
 
 
