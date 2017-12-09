@@ -1,5 +1,5 @@
-eseries
-=======
+renard
+======
 
 The Renard series are a system of preferred numbers used in
 engineering applications which specifies a geometric sequence
