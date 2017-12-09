@@ -11,10 +11,10 @@ French army engineer Colonel Charles Renard and subsequently
 standardised in ISO 3-1973.
 
 For example, the R5 series contains six values
-(1.00, 1.60, 2.50, 4.00, 6.00) which cover a one-order of magnitude
+(1.0, 1.6, 2.5, 4.0, 6.3) which cover a one-order of magnitude
 range of values (one decade) from one to ten.
 These base values repeat again to cover the next decade from 10
-to 100, as 10, 16, 25, 40, and 60.
+to 100, as 10, 16, 25, 40, and 63.
 
 This ``renard`` library is useful for selecting values from the
 least rounded R5, R10, R20, R40 and R80 decades, the medium
