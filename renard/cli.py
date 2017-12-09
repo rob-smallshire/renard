@@ -9,7 +9,7 @@ import docopt_subcommands as dsc
 from renard.eng import eng_string
 from renard.version import __version__
 from renard.renard import (series_key_from_name, find_nearest, find_nearest_few, find_greater_than_or_equal,
-                           find_greater_than, find_less_than, find_less_than_or_equal,  series, rrange)
+                           find_greater_than, find_less_than, find_less_than_or_equal, series, rrange, precision)
 
 DOC_TEMPLATE = """{program}
 
@@ -28,7 +28,7 @@ See '{program} help <command>' for help on specific commands.
 
 @dsc.command()
 def handle_nearest(args):
-    """usage: {program} nearest <e-series> <value> [--symbol]
+    """usage: {program} nearest <Renard-series> <value> [--symbol]
 
     The nearest value in an Renard series.
 
@@ -45,7 +45,7 @@ def handle_nearest(args):
 
 @dsc.command()
 def handle_nearby(args):
-    """usage: {program} nearby <e-series> <value> [--symbol]
+    """usage: {program} nearby <Renard-series> <value> [--symbol]
 
     At least three nearby values in an Renard series, and least one of
     which will be less-than the given value, and at least one
@@ -65,7 +65,7 @@ def handle_nearby(args):
 
 @dsc.command()
 def handle_gt(args):
-    """usage: {program} gt <e-series> <value> [--symbol]
+    """usage: {program} gt <Renard-series> <value> [--symbol]
 
     The largest value greater-than the given value.
 
@@ -82,7 +82,7 @@ def handle_gt(args):
 
 @dsc.command()
 def handle_ge(args):
-    """usage: {program} ge <e-series> <value> [--symbol]
+    """usage: {program} ge <Renard-series> <value> [--symbol]
 
     The largest value greater-than or equal-to the given value.
 
@@ -99,7 +99,7 @@ def handle_ge(args):
 
 @dsc.command()
 def handle_lt(args):
-    """usage: {program} lt <e-series> <value> [--symbol]
+    """usage: {program} lt <Renard-series> <value> [--symbol]
 
     The largest value less-than the given value.
 
@@ -116,7 +116,7 @@ def handle_lt(args):
 
 @dsc.command()
 def handle_le(args):
-    """usage: {program} le <e-series> <value> [--symbol]
+    """usage: {program} le <Renard-series> <value> [--symbol]
 
     The largest value less-than or equal-to the given value.
 
@@ -133,7 +133,7 @@ def handle_le(args):
 
 @dsc.command()
 def handle_series(args):
-    """usage: {program} series <e-series>
+    """usage: {program} series <Renard-series>
 
     The base values for the given Renard series.
     """
@@ -145,7 +145,7 @@ def handle_series(args):
 
 @dsc.command()
 def handle_range(args):
-    """usage: {program} range <e-series> <start-value> <stop-value> [--symbol]
+    """usage: {program} range <Renard-series> <start-value> <stop-value> [--symbol]
 
     All values in the given Renard series from start-value to stop-value inclusive.
 
@@ -162,12 +162,24 @@ def handle_range(args):
     return os.EX_OK
 
 
+@dsc.command()
+def handle_precision(args):
+    """usage: {program} precision <Renard-series>
+
+    The multiple to which the base values in the series are rounded.
+    """
+    series_key = extract_series_key(args)
+    p = precision(series_key)
+    print(p)
+    return os.EX_OK
+
+
 def present_value(args, nearest):
     return eng_string(nearest, prefix=args['--symbol'])
 
 
 def extract_series_key(args):
-    e_series_name = args['<e-series>']
+    e_series_name = args['<Renard-series>']
     series_key = series_key_from_name(e_series_name)
     return series_key
 

@@ -118,6 +118,26 @@ def series(series_key):
                                  ', '.join(str(key.name) for key in series_keys())))
 
 
+def precision(series_key):
+    """The precision for the given Renard series.
+
+    Args:
+        series_key: An Renard series key such as R20.
+
+    Returns:
+        The float multiple to which the base values in the series
+        have been rounded.
+
+    Raises:
+        ValueError: If not such series exists.
+    """
+    if series_key not in _R:
+        raise ValueError("Renard series {} not found. Available Renard series keys are {}"
+                         .format(series_key,
+                                 ', '.join(str(key.name) for key in series_keys())))
+    return series_key.precision
+
+
 def series_keys():
     """The available series keys.
 

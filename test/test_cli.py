@@ -86,3 +86,10 @@ def test_bogus_value_gives_exit_code_ex_dataerr():
 def test_malformed_command_gives_code_ex_usage():
     code = main("foo R13 316".split())
     assert code == os.EX_USAGE
+
+
+def test_precision(capfd):
+    code = main("precision R5".split())
+    out, err = capfd.readouterr()
+    assert code == os.EX_OK
+    assert out == '0.01\n'

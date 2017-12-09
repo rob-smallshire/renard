@@ -3,8 +3,9 @@ from hypothesis import given, assume
 from hypothesis.strategies import sampled_from, floats, data, integers
 from pytest import raises
 
-from renard.renard import (RenardSeriesKey, series, rrange, find_less_than_or_equal, find_greater_than_or_equal, find_nearest,
-                    find_less_than, find_greater_than, find_nearest_few, open_rrange, R10)
+from renard.renard import (RenardSeriesKey, series, rrange, find_less_than_or_equal, find_greater_than_or_equal,
+                           find_nearest,
+                           find_less_than, find_greater_than, find_nearest_few, open_rrange, R10, precision)
 
 
 @given(series_key=sampled_from(RenardSeriesKey))
@@ -195,3 +196,9 @@ def test_open_erange_start_stop_in_wrong_order_raises_value_error():
 def test_illegal_series_key_raises_value_error():
     with raises(ValueError):
         series(13)
+
+@given(series_key=sampled_from(RenardSeriesKey))
+def test_series_precision_is_positive(series_key):
+    assert precision(series_key) > 0
+
+
