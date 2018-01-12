@@ -56,14 +56,14 @@ For full help::
 
 In the meantime, here are some highlights.
 
-To find the nearest E24 value to 319 use::
+To find the nearest R20 value to 319 use::
 
   >>> from renard import find_nearest, R20
   >>> find_nearest(R20, 319)
   >>> 315.0
 
 
-To find the next value greater-than or equal-to 184 in the E96 series
+To find the next value greater-than or equal-to 182 in the R80 series
 use::
 
   >>> from renard import find_greater_than_or_equal, R80
