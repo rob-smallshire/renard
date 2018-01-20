@@ -80,7 +80,7 @@ To find a few values around the specified value, use::
 Command-Line Interface
 ----------------------
 
-There's also a handy command-line interface. Run ``eseries --help``
+There's also a handy command-line interface. Run ``renard --help``
 to see a list of commands::
 
   $ renard --help
