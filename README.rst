@@ -60,7 +60,7 @@ To find the nearest R20 value to 319 use::
 
   >>> from renard import find_nearest, R20
   >>> find_nearest(R20, 319)
-  >>> 315.0
+  315.0
 
 
 To find the next value greater-than or equal-to 182 in the R80 series
@@ -68,13 +68,13 @@ use::
 
   >>> from renard import find_greater_than_or_equal, R80
   >>> find_greater_than_or_equal(R80, 182)
-  >>> 185.0
+  185.0
 
 To find a few values around the specified value, use::
 
   >>> from renard import find_nearest_few, R20
   >>> find_nearest_few(R20, 5000)
-  >>> (4500.0, 5000.0, 5600.0)
+  (4500.0, 5000.0, 5600.0)
 
 
 Command-Line Interface
