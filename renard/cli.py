@@ -27,7 +27,7 @@ See '{program} help <command>' for help on specific commands.
 
 
 @dsc.command()
-def handle_nearest(args):
+def handle_nearest(precommand, args):
     """usage: {program} nearest <Renard-series> <value> [--symbol]
 
     The nearest value in an Renard series.
@@ -44,7 +44,7 @@ def handle_nearest(args):
 
 
 @dsc.command()
-def handle_nearby(args):
+def handle_nearby(precommand, args):
     """usage: {program} nearby <Renard-series> <value> [--symbol]
 
     At least three nearby values in an Renard series, and least one of
@@ -64,7 +64,7 @@ def handle_nearby(args):
 
 
 @dsc.command()
-def handle_gt(args):
+def handle_gt(precommand, args):
     """usage: {program} gt <Renard-series> <value> [--symbol]
 
     The largest value greater-than the given value.
@@ -81,7 +81,7 @@ def handle_gt(args):
 
 
 @dsc.command()
-def handle_ge(args):
+def handle_ge(precommand, args):
     """usage: {program} ge <Renard-series> <value> [--symbol]
 
     The largest value greater-than or equal-to the given value.
@@ -98,7 +98,7 @@ def handle_ge(args):
 
 
 @dsc.command()
-def handle_lt(args):
+def handle_lt(precommand, args):
     """usage: {program} lt <Renard-series> <value> [--symbol]
 
     The largest value less-than the given value.
@@ -115,7 +115,7 @@ def handle_lt(args):
 
 
 @dsc.command()
-def handle_le(args):
+def handle_le(precommand, args):
     """usage: {program} le <Renard-series> <value> [--symbol]
 
     The largest value less-than or equal-to the given value.
@@ -132,7 +132,7 @@ def handle_le(args):
 
 
 @dsc.command()
-def handle_series(args):
+def handle_series(precommand, args):
     """usage: {program} series <Renard-series>
 
     The base values for the given Renard series.
@@ -144,7 +144,7 @@ def handle_series(args):
 
 
 @dsc.command()
-def handle_range(args):
+def handle_range(precommand, args):
     """usage: {program} range <Renard-series> <start-value> <stop-value> [--symbol]
 
     All values in the given Renard series from start-value to stop-value inclusive.
@@ -163,7 +163,7 @@ def handle_range(args):
 
 
 @dsc.command()
-def handle_precision(args):
+def handle_precision(precommand, args):
     """usage: {program} precision <Renard-series>
 
     The multiple to which the base values in the series are rounded.
@@ -198,11 +198,10 @@ def main(argv=None):
     try:
         return dsc.main(
             program='renard',
-            version='Renard series {}'.format(__version__),
             argv=argv,
             doc_template=DOC_TEMPLATE,
             exit_at_end=False)
-    except docopt.DocoptExit as exc:
+    except (docopt.DocoptExit, SystemExit) as exc:
         print(exc, file=sys.stderr)
         return os.EX_USAGE
     except ValueError as exc:
