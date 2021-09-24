@@ -201,7 +201,7 @@ def main(argv=None):
             argv=argv,
             doc_template=DOC_TEMPLATE,
             exit_at_end=False)
-    except docopt.DocoptExit as exc:
+    except (docopt.DocoptExit, SystemExit) as exc:
         print(exc, file=sys.stderr)
         return os.EX_USAGE
     except ValueError as exc:
