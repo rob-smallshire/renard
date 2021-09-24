@@ -198,7 +198,6 @@ def main(argv=None):
     try:
         return dsc.main(
             program='renard',
-            version='Renard series {}'.format(__version__),
             argv=argv,
             doc_template=DOC_TEMPLATE,
             exit_at_end=False)
