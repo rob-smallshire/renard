@@ -52,7 +52,7 @@ jobs:
           python -m build
       - name: "Echo github.ref"
         run: |
-          echo "{{ githif.ref }}"
+          echo "${{ githif.ref }}"
       - name: Publish package
         if: ${{ startsWith('refs/tags/release', github.ref) }}
         uses: pypa/gh-action-pypi-publish@release/v1
