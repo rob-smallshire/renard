@@ -1,0 +1,8 @@
+[build-system]
+build-backend = 'setuptools.build_meta'
+# Minimum requirements for the build system to execute.
+requires = ["setuptools", "wheel", "grpcio-tools", "tox"]  # PEP 508 specifications.
+
+[tool.black]
+line-length = 100
+target-version = ['py39']
