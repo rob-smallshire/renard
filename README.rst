@@ -2,7 +2,7 @@ renard
 ======
 
 The Renard series are a system of preferred numbers used in
-engineering applications which specifies a geometric sequence
+engineering applications which specify a geometric sequence
 of numbers over the range one to ten. The numbers
 are selected to be convenient to use and to minimise the
 maximum relative error when an arbitrary number is replaced
@@ -11,7 +11,7 @@ French army engineer Colonel Charles Renard and subsequently
 standardised in ISO 3-1973.
 
 For example, the R5 series contains six values
-(1.0, 1.6, 2.5, 4.0, 6.3) which cover a one-order of magnitude
+(1.0, 1.6, 2.5, 4.0, 6.3) which cover a single order-of-magnitude
 range of values (one decade) from one to ten.
 These base values repeat again to cover the next decade from 10
 to 100, as 10, 16, 25, 40, and 63.
@@ -28,7 +28,7 @@ Status
 
 .. image:: https://travis-ci.org/rob-smallshire/renard.svg?branch=master
     :target: https://travis-ci.org/rob-smallshire/renard
-    
+
 .. image:: https://coveralls.io/repos/github/rob-smallshire/renard/badge.svg?branch=master
     :target: https://coveralls.io/github/rob-smallshire/renard?branch=master
 
