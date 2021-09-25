@@ -39,7 +39,7 @@ setup(
 
     description='Working with the Renard series of preferred numbers specified in ISO 3.',
     long_description=long_description,
-
+    long_description_content_type="text/x-rst",
     # The project's main homepage.
     url='https://github.com/rob-smallshire/renard',
 
