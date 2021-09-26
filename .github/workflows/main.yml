@@ -39,6 +39,7 @@ jobs:
         run: |
           set -xe
           pwd
+          ls
           python -m coverage combine
           python -m coverage xml
         if: "contains(env.USING_COVERAGE, matrix.python-version)"
