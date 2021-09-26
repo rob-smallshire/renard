@@ -30,8 +30,8 @@ Status
      :target: https://github.com/rob-smallshire/renard/actions?workflow=CI
      :alt: CI Status
 
-.. image:: https://coveralls.io/repos/github/rob-smallshire/renard/badge.svg?branch=master
-    :target: https://coveralls.io/github/rob-smallshire/renard?branch=master
+.. image:: https://codecov.io/gh/rob-smallshire/renard/branch/master/graph/badge.svg?token=OUXB3M3RZW
+     :target: https://codecov.io/gh/rob-smallshire/renard
 
 
 
