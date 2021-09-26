@@ -26,8 +26,9 @@ RRR10 and RRR20 decades.
 Status
 ------
 
-.. image:: https://travis-ci.org/rob-smallshire/renard.svg?branch=master
-    :target: https://travis-ci.org/rob-smallshire/renard
+.. image:: https://github.com/YOU/YOUR-PROJECT/workflows/CI/badge.svg?branch=master
+     :target: https://github.com/rob-smallshire/renard/actions?workflow=CI
+     :alt: CI Status
 
 .. image:: https://coveralls.io/repos/github/rob-smallshire/renard/badge.svg?branch=master
     :target: https://coveralls.io/github/rob-smallshire/renard?branch=master
