@@ -93,7 +93,7 @@ setup(
     extras_require = {
         'dev': ['check-manifest', 'wheel', 'bumpversion'],
         'doc': ['sphinx', 'cartouche'],
-        'test': ['coverage', 'hypothesis', 'pytest'],
+        'test': ['hypothesis', 'pytest', 'pytest-cov'],
     },
 
     # If there are data files included in your packages that need to be
