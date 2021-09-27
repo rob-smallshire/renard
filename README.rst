@@ -168,3 +168,23 @@ been rounded, use the ``precision`` command::
   0.01
 
 
+Administration
+==============
+
+To run tests locally, ensure the required versions of Python are available in the environment::
+
+  $ pyenv shell 3.7.9 3.8.1 3.9.1
+
+then run ``tox``::
+
+  $ tox
+
+
+To release, bump the version::
+
+  $ bump version patch
+
+and push the master branch and tags to github::
+
+  $ git push
+  $ git push --tags
