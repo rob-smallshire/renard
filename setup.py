@@ -35,8 +35,9 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version=find_version("renard/version.py"),
-
+    version=find_version("src/renard/version.py"),
+    package_dir={'': 'src'},
+    packages=find_packages('src'),
     description='Working with the Renard series of preferred numbers specified in ISO 3.',
     long_description=long_description,
     long_description_content_type="text/x-rst",
@@ -76,10 +77,6 @@ setup(
 
     # What does your project relate to?
     keywords='engineering preferred-numbers',
-
-    # You can just specify the packages manually here if your project is
-    # simple. Or you can use find_packages().
-    packages=find_packages(exclude=['contrib', 'docs', 'test*']),
 
     # List run-time dependencies here.  These will be installed by pip when your
     # project is installed. For an analysis of "install_requires" vs pip's
