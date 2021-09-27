@@ -182,7 +182,7 @@ then run ``tox``::
 
 To release, bump the version::
 
-  $ bump version patch
+  $ bumpversion patch
 
 and push the master branch and tags to github::
 
