@@ -1,6 +1,6 @@
 [run]
 omit =
-    eseries/__main__.py
+    renard/__main__.py
 
 [report]
 # Regexes for lines to exclude from consideration
