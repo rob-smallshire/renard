@@ -1,7 +1,7 @@
 [build-system]
 build-backend = 'setuptools.build_meta'
 # Minimum requirements for the build system to execute.
-requires = ["setuptools"]  # PEP 508 specifications.
+requires = ["setuptools>=49.9.0"]  # PEP 508 specifications.
 
 [tool.black]
 line-length = 100
