@@ -171,7 +171,8 @@ been rounded, use the ``precision`` command::
 Administration
 ==============
 
-To run tests locally, ensure the required versions of Python are available in the environment::
+To run tests locally, ensure the required versions of Python are available in the environment,
+for example,::
 
   $ pyenv shell 3.7.9 3.8.1 3.9.1
 
@@ -184,7 +185,6 @@ To release, bump the version::
 
   $ bumpversion patch
 
-and push the master branch and tags to github::
+and push the master branch and release tags to github::
 
-  $ git push
-  $ git push --tags
+  $ git push --follow-tags
