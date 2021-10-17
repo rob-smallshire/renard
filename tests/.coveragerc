@@ -1,6 +1,6 @@
 [run]
 omit =
-    renard/__main__.py
+    src/renard/__main__.py
 
 [report]
 # Regexes for lines to exclude from consideration
